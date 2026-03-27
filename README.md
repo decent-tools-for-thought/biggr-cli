@@ -1,87 +1,101 @@
+<div align="center">
+
 # biggr-cli
 
-`biggr-cli` is a production-ready command-line wrapper for the BiGGr v3 Data Access API, built for scriptable table/object lookup and Escher map retrieval.
+![Python](https://img.shields.io/badge/python-3.11%2B-eab308)
+![License](https://img.shields.io/badge/license-MIT-ca8a04)
 
-## API profile
+Comprehensive command-line client for BiGGr v3 data access: tables, objects, downloads, search/xref, Escher maps, and higher-level model workflows.
 
-- API name: BiGGr v3 Data Access API
-- API purpose: Programmatic access to metabolic models, reactions, metabolites, related objects, search tables, and Escher maps
-- Primary users: Bioinformatics/data engineers, metabolic modeling researchers, pipeline developers
-- Auth model: None (public API)
-- Base URL: `https://biggr.org/api/v3`
-- Docs: `https://biggr.org/data_access`
+</div>
+
+> [!IMPORTANT]
+> This codebase is entirely AI-generated. It is useful to me, I hope it might be useful to others, and issues and contributions are welcome.
+
+## Map
+- [Install](#install)
+- [Functionality](#functionality)
+- [Configuration](#configuration)
+- [Quick Start](#quick-start)
+- [Credits](#credits)
 
 ## Install
-
-Python 3.11+ is required.
+$$\color{#EAB308}Install \space \color{#CA8A04}Tool$$
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -U pip
 pip install .
-```
-
-After install, the `biggr` command is available.
-
-## Quick start
-
-```bash
-# Show help
-biggr
 biggr --help
-
-# List models table
-biggr tables /models --output json
-
-# Datatables-style POST with server-side length
-biggr tables /models --form length=5 --output json
-
-# Search models
-biggr search models ecoli --limit 3 --output json
-
-# Fetch one object by BiGG id
-biggr objects model iML1515 --output json
-
-# Fetch one object relationship by internal id
-biggr objects model.model_reactions 4 --output json
-
-# Download bulk reactions (truncated client-side)
-biggr download reactions --limit 2 --output json
-
-# Fetch Escher raw JSON map
-biggr escher iML1515 ubiquinone --output json
 ```
 
-## Command surface
+## Functionality
+$$\color{#EAB308}Work \space \color{#CA8A04}Tables$$
 
-- `biggr tables <endpoint>`
-- `biggr search <family> <query>`
-- `biggr objects <type> <id>`
-- `biggr download <metabolites|reactions>`
-- `biggr escher <model_bigg_id> <map_bigg_id>`
-- `biggr raw <GET|POST> <endpoint>`
+- `biggr tables`: direct DataTables-style endpoint access with GET query params (`--param`) or POST form fields (`--form`).
+- `biggr endpoint`: explicit named coverage for every documented table endpoint.
+- `biggr validate-endpoint`: preflight endpoint validation and URL/method preview without calling upstream.
 
-`raw` is the generic escape hatch for endpoints not covered by convenience commands.
+Named endpoint coverage (`biggr endpoint <name>`):
+- `compartments`, `genomes`, `models`, `collections`
+- `collection` (`collection_bigg_id`)
+- `universal-reactions`, `universal-metabolites`
+- `universal-metabolite-in-models` (`model_bigg_id`)
+- `compartment-models` (`compartment_bigg_id`)
+- `model-reactions`, `model-genes`, `model-metabolites` (`model_bigg_id`)
+- `model-metabolite-in-reactions` (`model_bigg_id`, `metabolite_bigg_id`)
+- `search-metabolites`, `search-metabolites-ref`, `search-metabolites-ann`, `search-metabolites-inchikey` (`query`)
+- `search-reactions`, `search-reactions-ref`, `search-reactions-ann`, `search-reactions-ec` (`query`)
+- `search-models`, `search-genomes` (`query`)
 
-## Output modes
+$$\color{#EAB308}Inspect \space \color{#CA8A04}Objects$$
+- `biggr objects`: direct `POST /objects` access by `type` + `id`.
+- `biggr object-get`: object fetch plus optional relationship expansion (`--expand`).
+- `biggr api object-types`: list documented object types.
 
-- `--output text` (default): concise summaries that preserve key context
-- `--output json`: pretty JSON, highest fidelity
-- `--output jsonl`: one JSON object per line for row-oriented responses
+$$\color{#EAB308}Resolve \space \color{#CA8A04}Search$$
+- `biggr search`: family-specific search endpoints.
+- `biggr xref`: namespace-aware external-id search (`CHEBI:...`, `RHEA:...`, `EC:...`, `seed:...`, `kegg:...`, `metacyc:...`, `metanetx:...`).
+- `biggr xref-resolve`: normalized xref resolution output (selected families, entity hint, matches).
+- `biggr search-smart`: heuristic routing for xref-style, EC-like, and broad free-text queries.
 
-`jsonl` works for object payloads and list/table row payloads containing objects.
+$$\color{#EAB308}Export \space \color{#CA8A04}Data$$
+- `biggr download`: bulk download for one resource (`metabolites` or `reactions`).
+- `biggr download-all`: fetch both resources; optionally write `metabolites.json` and `reactions.json`.
+
+$$\color{#EAB308}Browse \space \color{#CA8A04}Escher$$
+- `biggr escher`: fetch raw map JSON for one model/map pair.
+- `biggr escher-list`: list documented map IDs, optionally probe availability for a specific model.
+- `biggr escher-url`: print editable map URL for browser workflows.
+- `biggr api escher-maps`: list documented map IDs from API metadata command group.
+
+$$\color{#EAB308}Analyze \space \color{#CA8A04}Models$$
+- `biggr model summary`: compact model summary with counts.
+- `biggr model reactions|genes|metabolites`: common model table shortcuts.
+- `biggr model metabolite-usage`: reactions involving one metabolite in a model.
+- `biggr model reaction`: one-shot model reaction profile lookup.
+- `biggr model metabolite`: one-shot metabolite profile + usage summary.
+- `biggr model export`: model bundle (summary + key tables + Escher map availability).
+- `biggr models-top`: rank models by reaction/metabolite/gene counts.
+- `biggr compare models`: side-by-side summary with count deltas.
+
+$$\color{#EAB308}Check \space \color{#CA8A04}Runtime$$
+- `biggr doctor`: connectivity/runtime/API sanity checks.
+- `biggr docs`: generated full command reference (global options, commands, subcommands, and options).
+
+$$\color{#EAB308}Use \space \color{#CA8A04}Escape\space Hatch$$
+- `biggr raw`: arbitrary GET/POST for endpoints outside dedicated command groups.
 
 ## Configuration
+$$\color{#EAB308}Set \space \color{#CA8A04}Defaults$$
 
-Configuration precedence is explicit:
-
+Configuration precedence:
 1. CLI flags
 2. Environment variables
 3. Built-in defaults
 
-Supported flags/env vars:
-
+Supported settings:
 - `--base-url` / `BIGGR_BASE_URL` (default `https://biggr.org/api/v3`)
 - `--timeout` / `BIGGR_TIMEOUT` (default `20` seconds)
 - `--output` / `BIGGR_OUTPUT` (`text|json|jsonl`, default `text`)
@@ -94,42 +108,51 @@ export BIGGR_OUTPUT=json
 biggr tables /models --limit 10
 ```
 
-## Error handling and exit codes
-
-- `0`: success
-- `2`: usage/config/validation errors
-- `1`: runtime/API/network/upstream response errors
-
-The CLI reports concise, actionable messages for:
-
-- HTTP failures (including status code)
-- network failures/timeouts
-- rate limiting (`429`, includes `Retry-After` if present)
-- malformed JSON responses
-- invalid argument shapes such as malformed `KEY=VALUE`
-
-## Verification
+## Quick Start
+$$\color{#EAB308}Try \space \color{#CA8A04}Queries$$
 
 ```bash
-# Install development dependencies
-pip install -e .[dev]
+# Discover command surface
+biggr --help
+biggr docs
 
-# Lint
-ruff check .
+# API metadata and catalogs
+biggr api table-endpoints --output json
+biggr api object-types --output json
+biggr api escher-maps --output json
 
-# Type check
-mypy src tests
+# Core table/object workflows
+biggr endpoint models --limit 3 --output json
+biggr objects model iML1515 --output json
+biggr object-get model iML1515 --expand model_reactions --output json
 
-# Test
-pytest
+# Search/xref workflows
+biggr search models ecoli --limit 3 --output json
+biggr xref CHEBI:17790 --limit 3 --output json
+biggr xref-resolve RHEA:16505 --limit 3 --output json
+biggr search-smart "ecoli" --limit 3 --output json
+
+# Model workflows
+biggr model summary iML1515 --output json
+biggr model reactions iML1515 --limit 3 --output json
+biggr model metabolite-usage iML1515 atp_c:-4 --output json
+biggr model export iML1515 --limit 3 --output json
+biggr compare models iML1515 iJO1366 --output json
+
+# Downloads and Escher
+biggr download reactions --limit 2 --output json
+biggr download-all --out-dir ./biggr-downloads
+biggr escher iML1515 ubiquinone --output json
+biggr escher-list --model iML1515 --output json
+biggr escher-url iML1515 ubiquinone --output json
+
+# Validation and diagnostics
+biggr validate-endpoint model-reactions --arg model_bigg_id=iML1515 --output json
+biggr doctor --output json
 ```
 
-## Notes and caveats
+## Credits
 
-- The BiGGr table API follows DataTables server-side conventions. Use `--form` for POST fields (for example `length=5`).
-- Relationship object queries often require internal integer IDs (as described in BiGGr docs), while top-level objects usually accept BiGG IDs.
-- This CLI intentionally avoids hidden retries for non-idempotent calls; failures are surfaced directly.
+This client wraps the BiGGr v3 Data Access API and is not affiliated with BiGGr.
 
-## Attribution
-
-This tool wraps the public BiGGr API and is not an official BiGGr release. Credit to the BiGGr team for the upstream data platform and API.
+Credit goes to the BiGGr team for the data platform, endpoint design, and documentation this tool relies on.
