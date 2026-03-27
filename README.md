@@ -2,8 +2,9 @@
 
 # biggr-cli
 
-![Python](https://img.shields.io/badge/python-3.11%2B-eab308)
-![License](https://img.shields.io/badge/license-MIT-ca8a04)
+[![Release](https://img.shields.io/github/v/release/decent-tools-for-thought/biggr-cli?sort=semver&color=0f766e)](https://github.com/decent-tools-for-thought/biggr-cli/releases)
+![Python](https://img.shields.io/badge/python-3.11%2B-0ea5e9)
+![License](https://img.shields.io/badge/license-MIT-14b8a6)
 
 Comprehensive command-line client for BiGGr v3 data access: tables, objects, downloads, search/xref, Escher maps, and higher-level model workflows.
 
@@ -20,7 +21,7 @@ Comprehensive command-line client for BiGGr v3 data access: tables, objects, dow
 - [Credits](#credits)
 
 ## Install
-$$\color{#EAB308}Install \space \color{#CA8A04}Tool$$
+$$\color{#0EA5E9}Install \space \color{#14B8A6}Tool$$
 
 ```bash
 python -m venv .venv
@@ -31,7 +32,7 @@ biggr --help
 ```
 
 ## Functionality
-$$\color{#EAB308}Work \space \color{#CA8A04}Tables$$
+$$\color{#0EA5E9}Work \space \color{#14B8A6}Tables$$
 
 - `biggr tables`: direct DataTables-style endpoint access with GET query params (`--param`) or POST form fields (`--form`).
 - `biggr endpoint`: explicit named coverage for every documented table endpoint.
@@ -49,28 +50,28 @@ Named endpoint coverage (`biggr endpoint <name>`):
 - `search-reactions`, `search-reactions-ref`, `search-reactions-ann`, `search-reactions-ec` (`query`)
 - `search-models`, `search-genomes` (`query`)
 
-$$\color{#EAB308}Inspect \space \color{#CA8A04}Objects$$
+$$\color{#0EA5E9}Inspect \space \color{#14B8A6}Objects$$
 - `biggr objects`: direct `POST /objects` access by `type` + `id`.
 - `biggr object-get`: object fetch plus optional relationship expansion (`--expand`).
 - `biggr api object-types`: list documented object types.
 
-$$\color{#EAB308}Resolve \space \color{#CA8A04}Search$$
+$$\color{#0EA5E9}Resolve \space \color{#14B8A6}Search$$
 - `biggr search`: family-specific search endpoints.
 - `biggr xref`: namespace-aware external-id search (`CHEBI:...`, `RHEA:...`, `EC:...`, `seed:...`, `kegg:...`, `metacyc:...`, `metanetx:...`).
 - `biggr xref-resolve`: normalized xref resolution output (selected families, entity hint, matches).
 - `biggr search-smart`: heuristic routing for xref-style, EC-like, and broad free-text queries.
 
-$$\color{#EAB308}Export \space \color{#CA8A04}Data$$
+$$\color{#0EA5E9}Export \space \color{#14B8A6}Data$$
 - `biggr download`: bulk download for one resource (`metabolites` or `reactions`).
 - `biggr download-all`: fetch both resources; optionally write `metabolites.json` and `reactions.json`.
 
-$$\color{#EAB308}Browse \space \color{#CA8A04}Escher$$
+$$\color{#0EA5E9}Browse \space \color{#14B8A6}Escher$$
 - `biggr escher`: fetch raw map JSON for one model/map pair.
 - `biggr escher-list`: list documented map IDs, optionally probe availability for a specific model.
 - `biggr escher-url`: print editable map URL for browser workflows.
 - `biggr api escher-maps`: list documented map IDs from API metadata command group.
 
-$$\color{#EAB308}Analyze \space \color{#CA8A04}Models$$
+$$\color{#0EA5E9}Analyze \space \color{#14B8A6}Models$$
 - `biggr model summary`: compact model summary with counts.
 - `biggr model reactions|genes|metabolites`: common model table shortcuts.
 - `biggr model metabolite-usage`: reactions involving one metabolite in a model.
@@ -80,15 +81,15 @@ $$\color{#EAB308}Analyze \space \color{#CA8A04}Models$$
 - `biggr models-top`: rank models by reaction/metabolite/gene counts.
 - `biggr compare models`: side-by-side summary with count deltas.
 
-$$\color{#EAB308}Check \space \color{#CA8A04}Runtime$$
+$$\color{#0EA5E9}Check \space \color{#14B8A6}Runtime$$
 - `biggr doctor`: connectivity/runtime/API sanity checks.
 - `biggr docs`: generated full command reference (global options, commands, subcommands, and options).
 
-$$\color{#EAB308}Use \space \color{#CA8A04}Escape\space Hatch$$
+$$\color{#0EA5E9}Use \space \color{#14B8A6}Escape\space Hatch$$
 - `biggr raw`: arbitrary GET/POST for endpoints outside dedicated command groups.
 
 ## Configuration
-$$\color{#EAB308}Set \space \color{#CA8A04}Defaults$$
+$$\color{#0EA5E9}Set \space \color{#14B8A6}Defaults$$
 
 Configuration precedence:
 1. CLI flags
@@ -109,7 +110,7 @@ biggr tables /models --limit 10
 ```
 
 ## Quick Start
-$$\color{#EAB308}Try \space \color{#CA8A04}Queries$$
+$$\color{#0EA5E9}Try \space \color{#14B8A6}Queries$$
 
 ```bash
 # Discover command surface
