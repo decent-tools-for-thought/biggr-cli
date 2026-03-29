@@ -36,7 +36,7 @@ Source = "https://github.com/biosustain/biggr"
 [project.scripts]
 biggr = "biggr_cli.cli:entrypoint"
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
   "build>=1.2.2",
   "mypy>=1.10",
